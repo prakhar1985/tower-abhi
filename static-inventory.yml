@@ -1,0 +1,20 @@
+- hosts: localhost
+  tasks:
+  - name: Create Inventory
+    command: |
+      tower-cli inventory create -n static --organization Default
+
+  - name: Create Group in static inventory 
+    command: |
+      tower-cli group create --inventory static  --name workstation
+
+  - name: Add workstation host in tower_inventory 
+    command: |
+      tower-cli host create --inventory static --name workstation.test1.example.com
+
+  - name: Associate workstation host to group 
+    command: | 
+      tower-cli host associate --host workstation.test1.example.com --group workstation
+  - name: Create Homework Assignment project 
+    command: |
+      tower-cli project create --organization=Default --scm-type=git --scm-branch=master --scm-url=https://github.com/prakhar1985/tower-abhi.git --scm-update-on-launch=True -n Abhi
